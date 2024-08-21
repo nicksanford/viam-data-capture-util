@@ -50,14 +50,19 @@ func main() {
 
 func DataCaptureMetadataToUploadMetadata(dcm *v1.DataCaptureMetadata) *v1.UploadMetadata {
 	return &v1.UploadMetadata{
-		ComponentName:    dcm.ComponentName,
-		ComponentType:    dcm.ComponentType,
+		ComponentName: dcm.ComponentName,
+		ComponentType: dcm.ComponentType,
+		// This is not correct for images (and possibly for other binary files)
+		// TODO: Do what viam-server does in this case
 		FileExtension:    dcm.FileExtension,
 		FileName:         os.Args[1],
 		MethodName:       dcm.MethodName,
 		MethodParameters: dcm.MethodParameters,
-		PartId:           "unknown",
-		Tags:             dcm.Tags,
-		Type:             dcm.Type,
+		// this is unknown as it is not persisted in the *v1.DataCaptureMetadata
+		// the viam-server who wrote it is expected to provide this value from it's cloud
+		// config just before it uploads it to app
+		PartId: "unknown",
+		Tags:   dcm.Tags,
+		Type:   dcm.Type,
 	}
 }
